@@ -1,11 +1,24 @@
-import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 
-const MovieList = () => {
-  return (
-    <div>
-      <h1>Movie List</h1>
-    </div>
-  );
-};
-
-export default MovieList;
+const MovieList = ({ movies }) => {
+    const navigate = useNavigate();
+  
+    const handleMovieClick = (movie) => {
+      navigate(`/movies/${movie._id}`);
+    };
+  
+    return (
+      <main>
+        <h1>Your Movies:</h1>
+        <ul>
+          {movies.map((movie) => (
+            <li key={movie._id} onClick={() => handleMovieClick(movie)}>
+              {movie.title}
+            </li>
+          ))}
+        </ul>
+      </main>
+    );
+  };
+  
+  export default MovieList;
