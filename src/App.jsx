@@ -33,14 +33,15 @@ const App = () => {
         <NavBar user={user} handleSignout={handleSignout} />
         <Routes>
           {user ? (
-            <Route path="/" element={<Dashboard movies={movies} />} />
+            <>
+              <Route path="/" element={<Dashboard user={user} />} />
+              <Route path="/movies/:movieId" element={<MovieDetails />} />
+            </>
           ) : (
             <Route path="/" element={<Landing />} />
           )}
           <Route path="/signup" element={<SignupForm setUser={setUser} />} />
           <Route path="/signin" element={<SigninForm setUser={setUser} />} />
-          <Route path="/movies" element={<MovieList movies={movies} />} />
-          <Route path="/movies/:movieId" element={<MovieDetails />} />
         </Routes>
       </AuthedUserContext.Provider>
     </>

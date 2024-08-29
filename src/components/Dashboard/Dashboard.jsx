@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { AuthedUserContext } from '../../App';
 import * as movieService from '../../services/movieService'; 
+import { Link } from 'react-router-dom';
 
 const Dashboard = () => {
   const user = useContext(AuthedUserContext);
@@ -26,8 +27,10 @@ const Dashboard = () => {
       <h1>Welcome, {user.username}</h1>
       <p>Your Movies:</p>
       <ul>
-        {movies.map(movie => (
-          <li key={movie._id}>{movie.title}</li>
+      {movies.map(movie => (
+          <li key={movie._id}>
+            <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
+          </li>
         ))}
       </ul>
     </main>

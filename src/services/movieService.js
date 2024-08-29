@@ -21,29 +21,20 @@ export const getMovies = async () => {
 // export { getUserMovies };
 
 
-// export const getMovieDetails = async (movieId) => {
-//   try {
-//     const res = await fetch(`${BACKEND_URL}/movies/${movieId}`, {
-//       method: 'GET',
-//       headers: {
-//         'Content-Type': 'application/json',
-//         Authorization: `Bearer ${localStorage.getItem('token')}`,
-//       },
-//     });
-
-//     if (!res.ok) {
-//       throw new Error('Failed to fetch movie details');
-//     }
-
-//     const data = await res.json();
-
-//     if (data && data._id) {
-//       return data; // Return the movie details
-//     } else {
-//       throw new Error('Movie data is not structured as expected');
-//     }
-//   } catch (err) {
-//     console.error('Error fetching movie details:', err);
-//     throw err;
-//   }
-// };
+export const getMovieById = async (movieId) => {
+    try {
+      const res = await fetch(`${BACKEND_URL}/movies/${movieId}`, {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+      });
+      const movie = await res.json();
+      if (res.ok) {
+        return movie;
+      } else {
+        throw new Error(movie.error || 'Failed to fetch movie details');
+      }
+    } catch (err) {
+      console.error('Error fetching movie details:', err);
+      throw err;
+    }
+};
