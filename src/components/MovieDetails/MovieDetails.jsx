@@ -36,9 +36,10 @@ const MovieDetails = () => {
       <p><strong>Created By:</strong> {movie.createdBy.username}</p>
       <strong>Comments:</strong>
       <ul>
-        {movie.comments.map(comment => (
-          <li key={comment._id}>{comment.comment}</li>
-        ))}
+        {movie.comments.length > 0 ? (
+          movie.comments.map(comment => (
+            <li key={comment._id}>{comment.comment}</li>  
+          ))) : (<li>No comments available</li>)}
       </ul>
     </main>
   );
