@@ -33,6 +33,7 @@ const Dashboard = () => {
           </li>
         ))}
       </ul>
+      <Link to="/add-movie">Add a new Movie</Link>
     </main>
   );
 };

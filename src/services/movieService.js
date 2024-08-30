@@ -38,3 +38,25 @@ export const getMovieById = async (movieId) => {
       throw err;
     }
 };
+
+export const addMovie = async (movieData) => {
+    try {
+      const res = await fetch(`${BACKEND_URL}/movies`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(movieData),
+      });
+  
+      if (!res.ok) {
+        throw new Error('Failed to add movie');
+      }
+  
+      return await res.json();
+    } catch (err) {
+      console.error('Error adding movie:', err);
+      throw err;
+    }
+  };
