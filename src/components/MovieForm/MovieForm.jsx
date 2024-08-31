@@ -1,9 +1,10 @@
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import * as movieService from '../../services/movieService';
 
 const MovieForm = () => {
   const navigate = useNavigate();
+  const { movieId } = useParams();
 
   const [formData, setFormData] = useState({
     title: '',
@@ -13,6 +14,26 @@ const MovieForm = () => {
     review: '',
   });
   
+  useEffect(() => {
+    if (movieId) {
+      const fetchMovie = async () => {
+        try {
+          const movie = await movieService.getMovieById(movieId);
+          setFormData({
+            title: movie.title,
+            posterURL: movie.posterURL,
+            releaseDate: movie.releaseDate.slice(0, 10),
+            rating: movie.rating,
+            review: movie.review
+          });
+        } catch (err) {
+          console.error(err);
+        }
+      };
+      fetchMovie();
+    }
+  }, [movieId]);
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
@@ -20,74 +41,71 @@ const MovieForm = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      await movieService.addMovie(formData);
+      if (movieId) {
+        await movieService.updateMovie(movieId, formData); 
+      } else {
+        await movieService.addMovie(formData); 
+      }
       navigate('/'); 
     } catch (err) {
-      console.error('Error adding movie:', err);
+      console.error(err);
     }
   };
 
   return (
-    <main>
-      <h1>Add a New Movie</h1>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor="title">Title:</label>
-          <input
-            type="text"
-            id="title"
-            name="title"
-            value={formData.title}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="posterURL">Poster URL:</label>
-          <input
-            type="text"
-            id="posterURL"
-            name="posterURL"
-            value={formData.posterURL}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="releaseDate">Release Date:</label>
-          <input
-            type="date"
-            id="releaseDate"
-            name="releaseDate"
-            value={formData.releaseDate}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="rating">Rating:</label>
-          <input
-            type="number"
-            id="rating"
-            name="rating"
-            value={formData.rating}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <div>
-          <label htmlFor="review">Review:</label>
-          <textarea
-            id="review"
-            name="review"
-            value={formData.review}
-            onChange={handleChange}
-            required
-          />
-        </div>
-        <button type="submit">Add Movie</button>
-      </form>
-    </main>
+    <form onSubmit={handleSubmit}>
+      <div>
+        <label htmlFor="title">Title:</label>
+        <input
+          type="text"
+          id="title"
+          name="title"
+          value={formData.title}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label htmlFor="posterURL">Poster URL:</label>
+        <input
+          type="text"
+          id="posterURL"
+          name="posterURL"
+          value={formData.posterURL}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label htmlFor="releaseDate">Release Date:</label>
+        <input
+          type="date"
+          id="releaseDate"
+          name="releaseDate"
+          value={formData.releaseDate}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label htmlFor="rating">Rating:</label>
+        <input
+          type="number"
+          id="rating"
+          name="rating"
+          value={formData.rating}
+          onChange={handleChange}
+        />
+      </div>
+      <div>
+        <label htmlFor="review">Review:</label>
+        <textarea
+          id="review"
+          name="review"
+          value={formData.review}
+          onChange={handleChange}
+        />
+      </div>
+     <button type="submit">{movieId ? 'Update Movie' : 'Add Movie'}</button> 
+     {/* add if no id */}
+    </form>
   );
 };
 

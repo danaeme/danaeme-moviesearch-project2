@@ -1,27 +1,28 @@
 const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
-export const getMovies = async () => {
-  try {
-    const res = await fetch(`${BACKEND_URL}/movies`, {
-      method: 'GET',
-      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-    });
-    const movies = await res.json();
-    if (res.ok) {
-      return movies;
-    } else {
-      throw new Error(movies.error || 'Failed to fetch movies');
+const getMovies = async () => {
+    try {
+      const res = await fetch(`${BACKEND_URL}/movies`, {
+        method: 'GET',
+        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+      });
+      const movies = await res.json();
+      if (res.ok) {
+        return movies;
+      } else {
+        throw new Error(json.err);
+      }
+    } catch (err) {
+      console.error(err);
+      throw err;
     }
-  } catch (err) {
-    console.error('Error fetching movies:', err);
-    throw err;
-  }
 };
+  
 
 // export { getUserMovies };
 
 
-export const getMovieById = async (movieId) => {
+const getMovieById = async (movieId) => {
     try {
       const res = await fetch(`${BACKEND_URL}/movies/${movieId}`, {
         method: 'GET',
@@ -31,15 +32,15 @@ export const getMovieById = async (movieId) => {
       if (res.ok) {
         return movie;
       } else {
-        throw new Error(movie.error || 'Failed to fetch movie details');
+        throw new Error(json.err);
       }
     } catch (err) {
-      console.error('Error fetching movie details:', err);
+      console.error(err);
       throw err;
     }
 };
 
-export const addMovie = async (movieData) => {
+const addMovie = async (movieData) => {
     try {
       const res = await fetch(`${BACKEND_URL}/movies`, {
         method: 'POST',
@@ -49,14 +50,58 @@ export const addMovie = async (movieData) => {
         },
         body: JSON.stringify(movieData),
       });
-  
-      if (!res.ok) {
-        throw new Error('Failed to add movie');
+      const movie = await res.json();
+      if (res.ok) {
+        return movie;
+      } else {
+        throw new Error(json.err);
       }
-  
-      return await res.json();
     } catch (err) {
-      console.error('Error adding movie:', err);
+      console.error(err);
       throw err;
     }
-  };
+};
+
+const updateMovie = async (movieId, updatedData) => {
+    try {
+      const res = await fetch(`${BACKEND_URL}/movies/${movieId}`, {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+        body: JSON.stringify(updatedData),
+      });
+      const movie = await res.json();
+      if (res.ok) {
+        return movie;
+      } else {
+        throw new Error(json.err);
+      }
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+};
+
+const deleteMovie = async (movieId) => {
+    try {
+      const res = await fetch(`${BACKEND_URL}/movies/${movieId}`, {
+        method: 'DELETE',
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      });
+      if (res.ok) {
+        return { message: 'Movie deleted' };
+      } else {
+        const error = await res.json();
+        throw new Error(json.err);
+      }
+    } catch (err) {
+      console.error(err);
+      throw err;
+    }
+};
+
+export { getMovies, getMovieById, addMovie, updateMovie, deleteMovie };

@@ -37,6 +37,7 @@ const App = () => {
               <Route path="/" element={<Dashboard user={user} />} />
               <Route path="/movies/:movieId" element={<MovieDetails />} />
               <Route path="/add-movie" element={<MovieForm />} /> 
+              <Route path="/edit-movie/:movieId" element={<MovieForm />} />
             </>
           ) : (
             <Route path="/" element={<Landing />} />

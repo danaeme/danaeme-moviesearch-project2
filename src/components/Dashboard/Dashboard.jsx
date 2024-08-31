@@ -13,7 +13,7 @@ const Dashboard = () => {
         const movieData = await movieService.getMovies(); 
         setMovies(movieData);
       } catch (err) {
-        console.error('Error fetching movies:', err);
+        console.error(err);
       }
     };
 

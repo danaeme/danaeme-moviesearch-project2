@@ -1,31 +1,42 @@
 import { useEffect, useState } from 'react';
-import { useParams } from 'react-router-dom';
+import { useParams, useNavigate } from 'react-router-dom';
 import * as movieService from '../../services/movieService';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
+
 
   useEffect(() => {
     const fetchMovie = async () => {
       try {
         const movieData = await movieService.getMovieById(movieId);
         if (movieData) {
-          console.log("Fetched movie details:", movieData);
+          console.log(movieData);
           setMovie(movieData);
         }
       } catch (err) {
-        console.error("Error fetching movie:", err);
-      } finally {
-        setLoading(false);
+        console.error(err);
       }
+      setLoading(false); 
     };
 
     fetchMovie();
   }, [movieId]);
 
-  if (!movie) return <p>Loading...</p>;
+  const handleDelete = async () => {
+      try {
+        await movieService.deleteMovie(movieId);
+        navigate('/'); 
+      } catch (err) {
+        console.error('Error deleting movie:', err);
+      }
+  };
+
+  if (!movie) return <p>Movie not found</p>;
+  if (loading) return <p>Loading...</p>;
 
   return (
     <main>
@@ -41,6 +52,8 @@ const MovieDetails = () => {
             <li key={comment._id}>{comment.comment}</li>  
           ))) : (<li>No comments available</li>)}
       </ul>
+      <button onClick={() => navigate(`/edit-movie/${movieId}`)}>Edit</button> 
+      <button onClick={handleDelete}>Delete</button> 
     </main>
   );
 };
