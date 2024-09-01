@@ -9,6 +9,8 @@ import * as authService from '../src/services/authService';
 import * as movieService from '../src/services/movieService';
 import MovieDetails from './components/MovieDetails/MovieDetails';
 import MovieForm from './components/MovieForm/MovieForm'; 
+import CommentForm from './components/CommentForm/CommentForm';
+
 
 export const AuthedUserContext = createContext(null);
 
@@ -38,6 +40,7 @@ const App = () => {
               <Route path="/movies/:movieId" element={<MovieDetails />} />
               <Route path="/add-movie" element={<MovieForm />} /> 
               <Route path="/edit-movie/:movieId" element={<MovieForm />} />
+              <Route path="/movies/:movieId/add-comment" element={<CommentForm />} />
             </>
           ) : (
             <Route path="/" element={<Landing />} />

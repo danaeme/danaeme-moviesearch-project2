@@ -1,6 +1,8 @@
 import { useEffect, useState } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import * as movieService from '../../services/movieService';
+import * as commentService from '../../services/commentService';
+import { Link } from 'react-router-dom';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
@@ -31,7 +33,7 @@ const MovieDetails = () => {
         await movieService.deleteMovie(movieId);
         navigate('/'); 
       } catch (err) {
-        console.error('Error deleting movie:', err);
+        console.error(err);
       }
   };
 
@@ -49,11 +51,18 @@ const MovieDetails = () => {
       <ul>
         {movie.comments.length > 0 ? (
           movie.comments.map(comment => (
-            <li key={comment._id}>{comment.comment}</li>  
+            <li key={comment._id}>
+              {comment.user.username}: "{comment.comment}"
+            </li>
           ))) : (<li>No comments available</li>)}
       </ul>
-      <button onClick={() => navigate(`/edit-movie/${movieId}`)}>Edit</button> 
-      <button onClick={handleDelete}>Delete</button> 
+      <button onClick={handleDelete}>Delete</button>
+      <Link to={`/edit-movie/${movieId}`}>
+        <button>Edit</button>
+      </Link>
+      <Link to={`/movies/${movieId}/add-comment`}>
+        <button>Add a Comment</button>
+      </Link>
     </main>
   );
 };
