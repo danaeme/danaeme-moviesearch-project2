@@ -1,8 +1,7 @@
 import { useEffect, useState } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import { useParams, useNavigate, Link } from 'react-router-dom';
 import * as movieService from '../../services/movieService';
 import * as commentService from '../../services/commentService';
-import { Link } from 'react-router-dom';
 
 const MovieDetails = () => {
   const { movieId } = useParams();
@@ -16,7 +15,6 @@ const MovieDetails = () => {
       try {
         const movieData = await movieService.getMovieById(movieId);
         if (movieData) {
-          console.log(movieData);
           setMovie(movieData);
         }
       } catch (err) {
@@ -29,12 +27,22 @@ const MovieDetails = () => {
   }, [movieId]);
 
   const handleDelete = async () => {
-      try {
-        await movieService.deleteMovie(movieId);
-        navigate('/'); 
-      } catch (err) {
-        console.error(err);
-      }
+    try {
+      await movieService.deleteMovie(movieId);
+      navigate('/');
+    } catch (err) {
+      console.error(err);
+    }
+  };
+
+  const handleDeleteComment = async (commentId) => {
+    try {
+      await commentService.deleteComment(movieId, commentId);
+      const updatedMovie = await movieService.getMovieById(movieId);
+      setMovie(updatedMovie); 
+    } catch (err) {
+      console.error(err);
+    }
   };
 
   if (!movie) return <p>Movie not found</p>;
@@ -53,8 +61,21 @@ const MovieDetails = () => {
           movie.comments.map(comment => (
             <li key={comment._id}>
               {comment.user.username}: "{comment.comment}"
+              {comment.user._id === movie.createdBy._id && (
+                <>
+                  <Link to={`/movies/${movieId}/comments/${comment._id}/edit`} style={{ marginLeft: '10px' }}>
+                    Edit
+                  </Link>
+                  <button onClick={() => handleDeleteComment(comment._id)} style={{ marginLeft: '10px' }}>
+                    Delete
+                  </button>
+                </>
+              )}
             </li>
-          ))) : (<li>No comments available</li>)}
+          ))
+        ) : (
+          <li>No comments available</li>
+        )}
       </ul>
       <button onClick={handleDelete}>Delete</button>
       <Link to={`/edit-movie/${movieId}`}>

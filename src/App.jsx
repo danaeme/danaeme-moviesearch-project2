@@ -41,6 +41,7 @@ const App = () => {
               <Route path="/add-movie" element={<MovieForm />} /> 
               <Route path="/edit-movie/:movieId" element={<MovieForm />} />
               <Route path="/movies/:movieId/add-comment" element={<CommentForm />} />
+              <Route path="/movies/:movieId/comments/:commentId/edit" element={<CommentForm isEdit={true} />} />
             </>
           ) : (
             <Route path="/" element={<Landing />} />
