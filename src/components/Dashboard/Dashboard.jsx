@@ -10,7 +10,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const movieData = await movieService.getMovies(); 
+        const movieData = await movieService.getMovies(user._id); 
         setMovies(movieData);
       } catch (err) {
         console.error(err);
@@ -19,21 +19,32 @@ const Dashboard = () => {
 
     if (user) {
       fetchMovies();
+    } else {
+      console.log('User not found');
     }
   }, [user]);
+
+
+  if (!user) return <p>Loading user data...</p>;
+  if (movies.length === 0) return <p>No movies found</p>;
 
   return (
     <main>
       <h1>Welcome, {user.username}</h1>
-      <p>Your Movies:</p>
+      <h2>Your Movies:</h2>
       <ul>
-      {movies.map(movie => (
+        {movies.map(movie => (
           <li key={movie._id}>
             <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
           </li>
         ))}
       </ul>
-      <Link to="/add-movie">Add a new Movie</Link>
+      <Link to="/search-users">
+        <button>Search for Users</button>
+      </Link>
+      <Link to="/add-movie">
+        <button>Add a new Movie</button>
+      </Link>
     </main>
   );
 };

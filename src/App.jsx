@@ -10,6 +10,8 @@ import * as movieService from '../src/services/movieService';
 import MovieDetails from './components/MovieDetails/MovieDetails';
 import MovieForm from './components/MovieForm/MovieForm'; 
 import CommentForm from './components/CommentForm/CommentForm';
+import UserSearch from './components/UserSearch/UserSearch';
+import ProfilePage from './components/ProfilePage/ProfilePage';
 
 
 export const AuthedUserContext = createContext(null);
@@ -42,6 +44,8 @@ const App = () => {
               <Route path="/edit-movie/:movieId" element={<MovieForm />} />
               <Route path="/movies/:movieId/add-comment" element={<CommentForm />} />
               <Route path="/movies/:movieId/comments/:commentId/edit" element={<CommentForm isEdit={true} />} />
+              <Route path="/search-users" element={<UserSearch />} />
+              <Route path="/profile/:userId" element={<ProfilePage />} />
             </>
           ) : (
             <Route path="/" element={<Landing />} />
