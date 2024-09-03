@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate} from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import * as userService from '../../services/userService';
 import { AuthedUserContext } from '../../App';
@@ -8,6 +8,8 @@ const ProfilePage = (props) => {
     const { userId } = useParams();
     const [profile, setProfile] = useState(null);
     const authedUser = useContext(AuthedUserContext);
+    const navigate = useNavigate();
+
 
     useEffect(() => {
         const fetchProfile = async () => {
@@ -24,30 +26,30 @@ const ProfilePage = (props) => {
     if (!profile) return <p>Loading...</p>;
 
     return (
-        <main className="dashboard">
-          <h1>{profile.username}'s Profile</h1>
-          <p>Bio: {profile.bio || "No bio provided"}</p>
-          <div className="movie-grid">
-            {profile.movies && profile.movies.length > 0 ? (
-              profile.movies.map((movie) => (
+    <main className="profile-page">
+    <h1>{profile.username}'s Profile</h1>
+    <p>Bio: {profile.bio || "No bio provided"}</p>
+    <div className="movie-grid">
+        {profile.movies && profile.movies.length > 0 ? (
+            profile.movies.map((movie) => (
                 <div key={movie._id} className="movie-item">
-                  <Link to={`/movies/${movie._id}`} className="movie-link">
-                    <h3>{movie.title}</h3>
-                  </Link>
-                  {movie.poster ? (
-                    <img src={movie.poster} alt={`${movie.title} poster`} />
-                  ) : (
-                    <p>[Poster]</p>
-                  )}
+                    <Link to={`/movies/${movie._id}`} className="movie-link">
+                        <h3>{movie.title}</h3>
+                        {movie.posterURL ? (
+                            <img src={movie.posterURL} alt={`${movie.title} poster`} className="movie-poster" />
+                        ) : (
+                            <p>[Poster]</p>
+                        )}
+                    </Link>
                 </div>
-              ))
-            ) : (
-              <p>No movies to display</p>
-            )}
-          </div>
-          <button onClick={() => props.history.goBack()}>Back</button>
-        </main>
-      );
+            ))
+        ) : (
+            <p>No movies to display</p>
+        )}
+    </div>
+    <button onClick={() => navigate(`/users/${userId}/dashboard`)}>Back</button>
+    </main>
+    );
 };
 
 export default ProfilePage;
