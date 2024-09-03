@@ -3,30 +3,27 @@ import { useEffect, useState, useContext } from 'react';
 import * as movieService from '../../services/movieService';
 import * as commentService from '../../services/commentService';
 import { AuthedUserContext } from '../../App';
+import './MovieDetails.css';
 
-
-const MovieDetails = (props) => {
+const MovieDetails = () => {
   const { movieId } = useParams();
-  const [movie, setMovie] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
   const authedUser = useContext(AuthedUserContext);
 
+  const [movie, setMovie] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
 
   useEffect(() => {
     const fetchMovie = async () => {
       try {
         const movieData = await movieService.getMovieById(movieId);
-        if (movieData) {
-          setMovie(movieData);
-        } else {
-          setErrorMessage('Movie not found');
-        }
+        setMovie(movieData);
       } catch (err) {
-        setErrorMessage(err.message);
+        setErrorMessage('Failed to load movie details.');
+      } finally {
+        setLoading(false);
       }
-      setLoading(false); 
     };
 
     fetchMovie();
@@ -53,6 +50,8 @@ const MovieDetails = (props) => {
 
   if (loading) return <p>Loading...</p>;
   if (errorMessage) return <p>{errorMessage}</p>;
+  if (!movie) return <p>No movie data available.</p>;
+  if (!authedUser) return <p>User not authenticated.</p>;
 
   return (
     <main>
@@ -64,10 +63,10 @@ const MovieDetails = (props) => {
       <strong>Comments:</strong>
       <ul>
         {movie.comments.length > 0 ? (
-          movie.comments.map(comment => (
+          movie.comments.map((comment) => (
             <li key={comment._id}>
               {comment.user.username}: "{comment.comment}"
-              {comment.user._id === authedUser._id && (
+              {comment.user._id === authedUser.user._id && (
                 <>
                   <button onClick={() => navigate(`/movies/${movieId}/comments/${comment._id}/edit`)} style={{ marginLeft: '10px' }}>
                     Edit
@@ -79,9 +78,11 @@ const MovieDetails = (props) => {
               )}
             </li>
           ))
-        ) : (<li>No comments available</li>)}
+        ) : (
+          <li>No comments available</li>
+        )}
       </ul>
-      {movie.createdBy._id === authedUser._id && (
+      {movie.createdBy._id === authedUser.user._id && (
         <>
           <button onClick={handleDelete}>Delete</button>
           <button onClick={() => navigate(`/edit-movie/${movieId}`)}>Edit</button>

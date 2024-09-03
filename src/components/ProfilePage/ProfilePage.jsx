@@ -2,6 +2,7 @@ import { useParams, Link } from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import * as userService from '../../services/userService';
 import { AuthedUserContext } from '../../App';
+import '../Dashboard/Dashboard.css';
 
 const ProfilePage = (props) => {
     const { userId } = useParams();
@@ -23,17 +24,30 @@ const ProfilePage = (props) => {
     if (!profile) return <p>Loading...</p>;
 
     return (
-        <div>
-            <h1>{profile.username}'s Profile</h1>
-            {profile.movies.map(movie => (
-                <div key={movie._id}>
-                    <Link to={`/movies/${movie._id}`}>
-                        <h2>{movie.title}</h2>
-                    </Link>
+        <main className="dashboard">
+          <h1>{profile.username}'s Profile</h1>
+          <p>Bio: {profile.bio || "No bio provided"}</p>
+          <div className="movie-grid">
+            {profile.movies && profile.movies.length > 0 ? (
+              profile.movies.map((movie) => (
+                <div key={movie._id} className="movie-item">
+                  <Link to={`/movies/${movie._id}`} className="movie-link">
+                    <h3>{movie.title}</h3>
+                  </Link>
+                  {movie.poster ? (
+                    <img src={movie.poster} alt={`${movie.title} poster`} />
+                  ) : (
+                    <p>[Poster]</p>
+                  )}
                 </div>
-            ))}
-        </div>
-    );
+              ))
+            ) : (
+              <p>No movies to display</p>
+            )}
+          </div>
+          <button onClick={() => props.history.goBack()}>Back</button>
+        </main>
+      );
 };
 
 export default ProfilePage;
