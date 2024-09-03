@@ -3,10 +3,9 @@ import { Link } from 'react-router-dom';
 const Landing = () => {
   return (
     <main>
-      <h1>Hello, you are on the landing page for visitors.</h1>
+      <h1>Welcome to David's movie review app!</h1>
       <h3>
-        If you sign up for a new account, you will have the ability to sign in
-        and see your super secret dashboard.
+        Here you can show off your favorite movies and share your thoughts with the world!
       </h3>
       <div style={{ marginTop: '20px', display: 'flex', gap: '20px', justifyContent: 'center' }}>
         <Link to="/signup">
