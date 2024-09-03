@@ -54,7 +54,15 @@ const MovieDetails = () => {
   if (!authedUser) return <p>User not authenticated.</p>;
 
   return (
-    <main>
+  <main className="movie-details">
+    <div className="movie-poster-container">
+      {movie.posterURL ? (
+        <img src={movie.posterURL} alt={`${movie.title} poster`} className="movie-poster" />
+      ) : (
+        <p>[Poster]</p>
+      )}
+    </div>
+    <div className="movie-info">
       <h1>{movie.title}</h1>
       <p><strong>Release Date:</strong> {new Date(movie.releaseDate).toDateString()}</p>
       <p><strong>Rating:</strong> {movie.rating}</p>
@@ -66,7 +74,8 @@ const MovieDetails = () => {
           movie.comments.map((comment) => (
             <li key={comment._id}>
               {comment.user.username}: "{comment.comment}"
-              {comment.user._id === authedUser.user._id && (
+              {/* Only show edit/delete for the user's own comments */}
+              {authedUser && comment.user && comment.user._id === authedUser.user._id && (
                 <>
                   <button onClick={() => navigate(`/movies/${movieId}/comments/${comment._id}/edit`)} style={{ marginLeft: '10px' }}>
                     Edit
@@ -88,7 +97,11 @@ const MovieDetails = () => {
           <button onClick={() => navigate(`/edit-movie/${movieId}`)}>Edit</button>
         </>
       )}
-      <button onClick={() => navigate(`/movies/${movieId}/add-comment`)}>Add a Comment</button>
+        <button onClick={() => navigate(`/movies/${movieId}/add-comment`)}>Add a Comment</button>
+      </div>
+      <div className="movie-actions">
+        <button onClick={() => navigate(-1)}>Back</button>
+      </div>
     </main>
   );
 };

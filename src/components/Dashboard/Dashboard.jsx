@@ -40,11 +40,11 @@ const Dashboard = () => {
         {movies.map((movie) => (
           <div key={movie._id} className="movie-item">
             <Link to={`/movies/${movie._id}`} className="movie-link">{movie.title}</Link>
-            {movie.poster ? (
-              <img src={movie.poster} alt={`${movie.title} poster`} className="movie-poster" />
-            ) : (
-              <p className="placeholder-poster">[Poster]</p>
-            )}
+            {movie.posterURL ? (
+                <img src={movie.posterURL} alt={`${movie.title} poster`} className="movie-poster" />
+              ) : (
+                <p>[Poster]</p>
+              )}
           </div>
         ))}
       </div>
