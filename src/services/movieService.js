@@ -1,21 +1,23 @@
 const BACKEND_URL = import.meta.env.VITE_EXPRESS_BACKEND_URL;
 
-const getMovies = async () => {
-    try {
-      const res = await fetch(`${BACKEND_URL}/movies`, {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-      });
-      const movies = await res.json();
-      if (res.ok) {
-        return movies;
-      } else {
-        throw new Error(json.err);
-      }
-    } catch (err) {
-      console.error(err);
-      throw err;
+const getMovies = async (userId) => {
+  try {
+    const res = await fetch(`${BACKEND_URL}/movies`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    if (!res.ok) {
+      const error = await res.json();
+      throw new Error(error.error);
     }
+
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
 };
   
 
@@ -23,21 +25,21 @@ const getMovies = async () => {
 
 
 const getMovieById = async (movieId) => {
-    try {
-      const res = await fetch(`${BACKEND_URL}/movies/${movieId}`, {
-        method: 'GET',
-        headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
-      });
-      const movie = await res.json();
-      if (res.ok) {
-        return movie;
-      } else {
-        throw new Error(json.err);
-      }
-    } catch (err) {
-      console.error(err);
-      throw err;
+  try {
+    const res = await fetch(`${BACKEND_URL}/movies/${movieId}`, {
+      method: 'GET',
+      headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` },
+    });
+    const movie = await res.json();
+    if (res.ok) {
+      return movie;
+    } else {
+      throw new Error(movie.error || 'Error fetching movie');
     }
+  } catch (err) {
+    console.error('Error in getMovieById:', err);
+    throw err;
+  }
 };
 
 const addMovie = async (movieData) => {

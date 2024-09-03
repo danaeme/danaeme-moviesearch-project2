@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from 'react';
 import * as userService from '../../services/userService';
 import { AuthedUserContext } from '../../App';
 
-const ProfilePage = () => {
+const ProfilePage = (props) => {
     const { userId } = useParams();
     const [profile, setProfile] = useState(null);
     const authedUser = useContext(AuthedUserContext);
@@ -25,24 +25,13 @@ const ProfilePage = () => {
     return (
         <div>
             <h1>{profile.username}'s Profile</h1>
-            {profile.movies?.length > 0 ? (
-                profile.movies.map(movie => (
-                    <div key={movie._id}>
-                        <h2>
-                            <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
-                        </h2>
-                        {movie.posterURL && (
-                            <img 
-                                src={movie.posterURL} 
-                                alt={`${movie.title} poster`} 
-                                style={{ maxWidth: '200px', height: 'auto' }} 
-                            />
-                        )}
-                    </div>
-                ))
-            ) : (
-                <p>No movies found</p>
-            )}
+            {profile.movies.map(movie => (
+                <div key={movie._id}>
+                    <Link to={`/movies/${movie._id}`}>
+                        <h2>{movie.title}</h2>
+                    </Link>
+                </div>
+            ))}
         </div>
     );
 };

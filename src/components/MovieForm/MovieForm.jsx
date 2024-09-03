@@ -34,12 +34,12 @@ const MovieForm = () => {
     }
   }, [movieId]);
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (m) => {
+    setFormData({ ...formData, [m.target.name]: m.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async (m) => {
+    m.preventDefault();
     try {
       if (movieId) {
         await movieService.updateMovie(movieId, formData); 
@@ -104,7 +104,6 @@ const MovieForm = () => {
         />
       </div>
      <button type="submit">{movieId ? 'Update Movie' : 'Add Movie'}</button> 
-     {/* add if no id */}
     </form>
   );
 };

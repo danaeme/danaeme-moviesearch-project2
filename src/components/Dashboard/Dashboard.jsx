@@ -1,16 +1,18 @@
 import { useEffect, useState, useContext } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import * as movieService from '../../services/movieService';
 import { AuthedUserContext } from '../../App';
-import * as movieService from '../../services/movieService'; 
-import { Link } from 'react-router-dom';
+import './Dashboard.css';
 
 const Dashboard = () => {
-  const user = useContext(AuthedUserContext);
+  const { user, setUser } = useContext(AuthedUserContext);  
   const [movies, setMovies] = useState([]);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchMovies = async () => {
       try {
-        const movieData = await movieService.getMovies(user._id); 
+        const movieData = await movieService.getMovies(user._id);
         setMovies(movieData);
       } catch (err) {
         console.error(err);
@@ -19,32 +21,38 @@ const Dashboard = () => {
 
     if (user) {
       fetchMovies();
-    } else {
-      console.log('User not found');
     }
   }, [user]);
 
-
-  if (!user) return <p>Loading user data...</p>;
-  if (movies.length === 0) return <p>No movies found</p>;
+  const handleSignout = () => {
+    setUser(null);
+    navigate('/signin'); 
+  };
 
   return (
-    <main>
-      <h1>Welcome, {user.username}</h1>
-      <h2>Your Movies:</h2>
-      <ul>
-        {movies.map(movie => (
-          <li key={movie._id}>
-            <Link to={`/movies/${movie._id}`}>{movie.title}</Link>
-          </li>
+    <main className="dashboard">
+      <div className="header">
+        <h1>Welcome to {user.username}'s collection</h1>
+      </div>
+      <p>Bio: {user.bio || "No bio provided"}</p>
+      <p className="flicks">Check out their flicks:</p>
+      <div className="movie-grid">
+        {movies.map((movie) => (
+          <div key={movie._id} className="movie-item">
+            <Link to={`/movies/${movie._id}`} className="movie-link">{movie.title}</Link>
+            {movie.poster ? (
+              <img src={movie.poster} alt={`${movie.title} poster`} className="movie-poster" />
+            ) : (
+              <p className="placeholder-poster">[Poster]</p>
+            )}
+          </div>
         ))}
-      </ul>
-      <Link to="/search-users">
-        <button>Search for Users</button>
-      </Link>
-      <Link to="/add-movie">
-        <button>Add a new Movie</button>
-      </Link>
+      </div>
+      <div className="actions">
+        <Link to="/search-users" className="action-link">Search for Users</Link>
+        {user._id === user._id && (<Link to="/add-movie" className="action-link">Add new movie</Link>)}
+        <button onClick={handleSignout} className="action-link">Sign out</button>
+      </div>
     </main>
   );
 };

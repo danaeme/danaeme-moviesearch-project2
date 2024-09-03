@@ -13,11 +13,10 @@ import CommentForm from './components/CommentForm/CommentForm';
 import UserSearch from './components/UserSearch/UserSearch';
 import ProfilePage from './components/ProfilePage/ProfilePage';
 
-
 export const AuthedUserContext = createContext(null);
 
 const App = () => {
-  const [user, setUser] = useState(authService.getUser()); // using the method from authservice
+  const [user, setUser] = useState(authService.getUser()); 
   const [movies, setMovies] = useState([]);
 
   const handleSignout = () => {
@@ -32,29 +31,27 @@ const App = () => {
   }, [user]);
 
   return (
-    <>
-      <AuthedUserContext.Provider value={user}>
-        <NavBar user={user} handleSignout={handleSignout} />
-        <Routes>
-          {user ? (
-            <>
-              <Route path="/" element={<Dashboard user={user} />} />
-              <Route path="/movies/:movieId" element={<MovieDetails />} />
-              <Route path="/add-movie" element={<MovieForm />} /> 
-              <Route path="/edit-movie/:movieId" element={<MovieForm />} />
-              <Route path="/movies/:movieId/add-comment" element={<CommentForm />} />
-              <Route path="/movies/:movieId/comments/:commentId/edit" element={<CommentForm isEdit={true} />} />
-              <Route path="/search-users" element={<UserSearch />} />
-              <Route path="/profile/:userId" element={<ProfilePage />} />
-            </>
-          ) : (
-            <Route path="/" element={<Landing />} />
-          )}
-          <Route path="/signup" element={<SignupForm setUser={setUser} />} />
-          <Route path="/signin" element={<SigninForm setUser={setUser} />} />
-        </Routes>
-      </AuthedUserContext.Provider>
-    </>
+    <AuthedUserContext.Provider value={{ user, setUser }}>
+      <NavBar />
+      <Routes>
+        {user ? (
+          <>
+            <Route path="/" element={<Dashboard user={user} setUser={setUser} />} />
+            <Route path="/movies/:movieId" element={<MovieDetails />} />
+            <Route path="/add-movie" element={<MovieForm />} /> 
+            <Route path="/edit-movie/:movieId" element={<MovieForm />} />
+            <Route path="/movies/:movieId/add-comment" element={<CommentForm />} />
+            <Route path="/movies/:movieId/comments/:commentId/edit" element={<CommentForm isEdit={true} />} />
+            <Route path="/search-users" element={<UserSearch />} />
+            <Route path="/profile/:userId" element={<ProfilePage />} />
+          </>
+        ) : (
+          <Route path="/" element={<Landing />} />
+        )}
+        <Route path="/signup" element={<SignupForm setUser={setUser} />} />
+        <Route path="/signin" element={<SigninForm setUser={setUser} />} />
+      </Routes>
+    </AuthedUserContext.Provider>
   );
 };
 

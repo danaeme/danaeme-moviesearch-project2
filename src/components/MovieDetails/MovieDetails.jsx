@@ -1,13 +1,17 @@
-import { useEffect, useState } from 'react';
 import { useParams, useNavigate, Link } from 'react-router-dom';
+import { useEffect, useState, useContext } from 'react';
 import * as movieService from '../../services/movieService';
 import * as commentService from '../../services/commentService';
+import { AuthedUserContext } from '../../App';
 
-const MovieDetails = () => {
+
+const MovieDetails = (props) => {
   const { movieId } = useParams();
   const [movie, setMovie] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [errorMessage, setErrorMessage] = useState('');
   const navigate = useNavigate();
+  const authedUser = useContext(AuthedUserContext);
 
 
   useEffect(() => {
@@ -16,9 +20,11 @@ const MovieDetails = () => {
         const movieData = await movieService.getMovieById(movieId);
         if (movieData) {
           setMovie(movieData);
+        } else {
+          setErrorMessage('Movie not found');
         }
       } catch (err) {
-        console.error(err);
+        setErrorMessage(err.message);
       }
       setLoading(false); 
     };
@@ -31,22 +37,22 @@ const MovieDetails = () => {
       await movieService.deleteMovie(movieId);
       navigate('/');
     } catch (err) {
-      console.error(err);
+      setErrorMessage(err.message);
     }
   };
 
   const handleDeleteComment = async (commentId) => {
     try {
-      await commentService.deleteComment(movieId, commentId);
-      const updatedMovie = await movieService.getMovieById(movieId);
+      await commentService.deleteComment(movie._id, commentId);
+      const updatedMovie = await movieService.getMovieById(movie._id);
       setMovie(updatedMovie); 
     } catch (err) {
-      console.error(err);
+      setErrorMessage(err.message);
     }
   };
 
-  if (!movie) return <p>Movie not found</p>;
   if (loading) return <p>Loading...</p>;
+  if (errorMessage) return <p>{errorMessage}</p>;
 
   return (
     <main>
@@ -61,11 +67,11 @@ const MovieDetails = () => {
           movie.comments.map(comment => (
             <li key={comment._id}>
               {comment.user.username}: "{comment.comment}"
-              {comment.user._id === movie.createdBy._id && (
+              {comment.user._id === authedUser._id && (
                 <>
-                  <Link to={`/movies/${movieId}/comments/${comment._id}/edit`} style={{ marginLeft: '10px' }}>
+                  <button onClick={() => navigate(`/movies/${movieId}/comments/${comment._id}/edit`)} style={{ marginLeft: '10px' }}>
                     Edit
-                  </Link>
+                  </button>
                   <button onClick={() => handleDeleteComment(comment._id)} style={{ marginLeft: '10px' }}>
                     Delete
                   </button>
@@ -73,17 +79,15 @@ const MovieDetails = () => {
               )}
             </li>
           ))
-        ) : (
-          <li>No comments available</li>
-        )}
+        ) : (<li>No comments available</li>)}
       </ul>
-      <button onClick={handleDelete}>Delete</button>
-      <Link to={`/edit-movie/${movieId}`}>
-        <button>Edit</button>
-      </Link>
-      <Link to={`/movies/${movieId}/add-comment`}>
-        <button>Add a Comment</button>
-      </Link>
+      {movie.createdBy._id === authedUser._id && (
+        <>
+          <button onClick={handleDelete}>Delete</button>
+          <button onClick={() => navigate(`/edit-movie/${movieId}`)}>Edit</button>
+        </>
+      )}
+      <button onClick={() => navigate(`/movies/${movieId}/add-comment`)}>Add a Comment</button>
     </main>
   );
 };

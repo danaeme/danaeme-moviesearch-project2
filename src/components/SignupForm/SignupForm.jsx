@@ -7,6 +7,8 @@ const SignupForm = (props) => {
   const [message, setMessage] = useState(['']);
   const [formData, setFormData] = useState({
     username: '',
+    email: '',
+    bio: '',  
     password: '',
     passwordConf: '',
   });
@@ -30,10 +32,10 @@ const SignupForm = (props) => {
     }
   };
 
-  const { username, password, passwordConf } = formData;
+  const { username, email, bio, password, passwordConf } = formData;
 
   const isFormInvalid = () => {
-    return !(username && password && password === passwordConf);
+    return !(username && email && password && password === passwordConf);
   };
 
   return (
@@ -45,9 +47,30 @@ const SignupForm = (props) => {
           <label htmlFor="username">Username:</label>
           <input
             type="text"
-            id="name"
+            id="username"
             value={username}
             name="username"
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="email">Email:</label>  
+          <input
+            type="email"
+            id="email"
+            value={email}
+            name="email"
+            onChange={handleChange}
+            required
+          />
+        </div>
+        <div>
+          <label htmlFor="bio">Bio:</label>
+          <textarea
+            id="bio"
+            value={bio}
+            name="bio"
             onChange={handleChange}
           />
         </div>
@@ -59,6 +82,7 @@ const SignupForm = (props) => {
             value={password}
             name="password"
             onChange={handleChange}
+            required
           />
         </div>
         <div>
@@ -69,6 +93,7 @@ const SignupForm = (props) => {
             value={passwordConf}
             name="passwordConf"
             onChange={handleChange}
+            required
           />
         </div>
         <div>
