@@ -3,30 +3,32 @@
     justify-content: center;
     align-items: flex-start;
     padding: 20px;
-    background-color: #ff6666; 
+    background-color: #ff6666;
+    text-align: center; 
 }
-  
+
 .movie-poster-container {
     flex: 1;
     max-width: 300px;
     margin-right: 20px;
 }
-  
+
 .movie-poster {
     width: 100%;
     height: auto;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
-  
+
 .movie-info {
     flex: 2;
+    text-align: center; 
 }
-  
+
 ul {
     list-style-type: none;
     padding: 0;
 }
-  
+
 .edit-button,
 .delete-button {
     margin-left: 10px;
@@ -35,7 +37,20 @@ ul {
     padding: 5px 10px;
     cursor: pointer;
 }
-  
+
 .movie-actions {
     margin-top: 20px;
+}
+
+
+.rating-popcorn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 5px; 
+}
+
+.rating-popcorn img {
+    width: 25px; 
+    height: auto;
 }

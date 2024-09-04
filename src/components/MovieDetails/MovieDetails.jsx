@@ -48,6 +48,14 @@ const MovieDetails = () => {
     }
   };
 
+  const renderPopcornRating = (rating) => {
+    const popcorns = [];
+    for (let i = 0; i < rating; i++) {
+      popcorns.push(<img src="/images/popcorn_emoji.png" alt="popcorn emoji" key={i} />);
+    }
+    return popcorns;
+  };
+
   if (loading) return <p>Loading...</p>;
   if (errorMessage) return <p>{errorMessage}</p>;
   if (!movie) return <p>No movie data available.</p>;
@@ -65,7 +73,9 @@ const MovieDetails = () => {
     <div className="movie-info">
       <h1>{movie.title}</h1>
       <p><strong>Release Date:</strong> {new Date(movie.releaseDate).toDateString()}</p>
-      <p><strong>Rating:</strong> {movie.rating}</p>
+      <div className="rating-popcorn">
+          {renderPopcornRating(movie.rating)}
+      </div>      
       <p><strong>Review:</strong> {movie.review}</p>
       <strong>Comments:</strong>
       <ul>
@@ -78,7 +88,6 @@ const MovieDetails = () => {
                   <button onClick={() => navigate(`/movies/${movieId}/comments/${comment._id}/edit`)} style={{ marginLeft: '10px' }}>
                     Edit
                   </button>
-                  <button onClick={handleDelete}>Delete</button>
                   <button onClick={() => handleDeleteComment(comment._id)} style={{ marginLeft: '10px' }}>
                     Delete
                   </button>

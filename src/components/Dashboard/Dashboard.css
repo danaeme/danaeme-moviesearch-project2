@@ -98,9 +98,9 @@ p {
 }
 
 .action-link:hover, .delete-button:hover {
-    background-color: #444;
+    background-color: #000000;
 }
 
 .delete-button {
-    background-color: #000; 
+    background-color: #000000; 
 }
