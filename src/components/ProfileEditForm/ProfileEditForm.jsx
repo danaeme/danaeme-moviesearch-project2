@@ -46,10 +46,8 @@ const ProfileEditForm = () => {
                 bio: formData.bio,
                 email: formData.email,
             });
-                setUser((prevUser) => ({
-                ...prevUser,
-                ...updatedUser,
-            }));
+                setUser((prevUser) => ({...prevUser,...updatedUser,})
+            );
             navigate('/dashboard');
         } catch (err) {
             console.error(err);

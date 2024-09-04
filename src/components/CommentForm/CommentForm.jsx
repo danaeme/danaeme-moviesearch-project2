@@ -7,7 +7,6 @@ const CommentForm = ({ isEdit = false }) => {
   const [commentText, setCommentText] = useState('');
   const navigate = useNavigate();
 
-  // Load existing data if in edit mode
   useEffect(() => {
     if (isEdit) {
       const fetchComment = async () => {

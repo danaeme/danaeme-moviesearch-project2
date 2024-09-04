@@ -36,21 +36,30 @@ const Dashboard = () => {
       setUser(null); 
       navigate('/signin');
     } catch (err) {
-      console.error('Failed to delete user:', err);
+      console.error(err);
     }
+  };
+
+  const renderPopcornRating = (rating) => {
+    const popcornCount = Math.min(Math.max(rating, 0), 10); 
+    const popcornEmoji = '🍿';
+    return Array(popcornCount).fill(popcornEmoji).join('');
   };
 
   return (
     <main className="dashboard">
-      <div className="header">
-        <h1>{user.username}'s Anthology</h1>
-      </div>
-      <p> {user.bio || "No bio provided"}</p>
-      <p className="flicks">What do you want to show off?:</p>
+    <div className="header">
+    <h1>🍿 {user.username}'s Anthology 🍿</h1>    
+    </div>
+    <p>{user.bio ? user.bio : 'No bio provided'}</p> 
+    <p className="flicks">Now Showing:</p>
       <div className="movie-grid">
         {movies.map((movie) => (
           <div key={movie._id} className="movie-item">
             <Link to={`/movies/${movie._id}`} className="movie-link">{movie.title}</Link>
+            <div className="popcorn-rating">
+              {renderPopcornRating(movie.rating)}
+            </div>
             {movie.posterURL ? (
                 <img src={movie.posterURL} alt={`${movie.title} poster`} className="movie-poster" />
               ) : (

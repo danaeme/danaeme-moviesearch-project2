@@ -2,7 +2,7 @@ import { useParams, Link, useNavigate} from 'react-router-dom';
 import { useState, useEffect, useContext } from 'react';
 import * as userService from '../../services/userService';
 import { AuthedUserContext } from '../../App';
-import '../Dashboard/Dashboard.css';
+import './ProfilePage.css';
 
 const ProfilePage = (props) => {
     const { userId } = useParams();
@@ -23,6 +23,12 @@ const ProfilePage = (props) => {
         fetchProfile();
     }, [userId]);
 
+    const renderPopcornRating = (rating) => {
+        const popcornCount = Math.min(Math.max(rating, 0), 10); // Ensure rating is between 0 and 10
+        const popcornEmoji = '🍿';
+        return Array(popcornCount).fill(popcornEmoji).join('');
+    };
+
     if (!profile) return <p>Loading...</p>;
 
     return (
@@ -35,6 +41,9 @@ const ProfilePage = (props) => {
                 <div key={movie._id} className="movie-item">
                     <Link to={`/movies/${movie._id}`} className="movie-link">
                         <h3>{movie.title}</h3>
+                        <div className="popcorn-rating">
+                            {renderPopcornRating(movie.rating)}
+                         </div>
                         {movie.posterURL ? (
                             <img src={movie.posterURL} alt={`${movie.title} poster`} className="movie-poster" />
                         ) : (
