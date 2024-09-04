@@ -27,7 +27,7 @@ const ProfilePage = (props) => {
 
     return (
     <main className="profile-page">
-    <h1>{profile.username}'s Profile</h1>
+    <h1>{profile.username}'s Anthology</h1>
     <p>Bio: {profile.bio || "No bio provided"}</p>
     <div className="movie-grid">
         {profile.movies && profile.movies.length > 0 ? (

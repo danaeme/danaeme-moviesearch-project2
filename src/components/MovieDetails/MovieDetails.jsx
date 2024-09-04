@@ -32,7 +32,7 @@ const MovieDetails = () => {
   const handleDelete = async () => {
     try {
       await movieService.deleteMovie(movieId);
-      navigate('/');
+      navigate(`/profile/${authedUser.user._id}`);
     } catch (err) {
       setErrorMessage(err.message);
     }
@@ -79,6 +79,7 @@ const MovieDetails = () => {
                   <button onClick={() => navigate(`/movies/${movieId}/comments/${comment._id}/edit`)} style={{ marginLeft: '10px' }}>
                     Edit
                   </button>
+                  <button onClick={handleDelete}>Delete</button>
                   <button onClick={() => handleDeleteComment(comment._id)} style={{ marginLeft: '10px' }}>
                     Delete
                   </button>
@@ -98,10 +99,10 @@ const MovieDetails = () => {
       )}
         <button onClick={() => navigate(`/movies/${movieId}/add-comment`)}>Add a Comment</button>
       </div>
-      <div className="movie-actions">
-        <button onClick={() => navigate(`/profile/${movie.createdBy._id}`)}>Back</button>
-      </div>
-    </main>
+        <div className="movie-actions">
+        <button onClick={() => navigate("/dashboard")}>Back</button>
+        </div>
+       </main>
   );
 };
 
