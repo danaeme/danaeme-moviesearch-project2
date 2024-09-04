@@ -67,7 +67,6 @@ const MovieDetails = () => {
       <p><strong>Release Date:</strong> {new Date(movie.releaseDate).toDateString()}</p>
       <p><strong>Rating:</strong> {movie.rating}</p>
       <p><strong>Review:</strong> {movie.review}</p>
-      <p><strong>Created By:</strong> {movie.createdBy.username}</p>
       <strong>Comments:</strong>
       <ul>
         {movie.comments.length > 0 ? (

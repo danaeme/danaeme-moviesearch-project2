@@ -43,10 +43,10 @@ const Dashboard = () => {
   return (
     <main className="dashboard">
       <div className="header">
-        <h1>Add to your collection {user.username}!</h1>
+        <h1>{user.username}'s Anthology</h1>
       </div>
-      <p> About me: {user.bio || "No bio provided"}</p>
-      <p className="flicks">Check out their flicks:</p>
+      <p> {user.bio || "No bio provided"}</p>
+      <p className="flicks">What do you want to show off?:</p>
       <div className="movie-grid">
         {movies.map((movie) => (
           <div key={movie._id} className="movie-item">
