@@ -28,7 +28,7 @@ const ProfilePage = (props) => {
     return (
     <main className="profile-page">
     <h1>{profile.username}'s Anthology</h1>
-    <p>Bio: {profile.bio || "No bio provided"}</p>
+    <p>{profile.bio || "No bio provided"}</p>
     <div className="movie-grid">
         {profile.movies && profile.movies.length > 0 ? (
             profile.movies.map((movie) => (
@@ -41,8 +41,8 @@ const ProfilePage = (props) => {
                             <p>[Poster]</p>
                         )}
                     </Link>
-                </div>
-            ))
+                </div> 
+            )) 
         ) : (
             <p>No movies to display</p>
         )}

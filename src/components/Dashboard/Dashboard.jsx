@@ -1,6 +1,7 @@
 import { useEffect, useState, useContext } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import * as movieService from '../../services/movieService';
+import * as userService from '../../services/userService'; 
 import { AuthedUserContext } from '../../App';
 import './Dashboard.css';
 
@@ -29,12 +30,22 @@ const Dashboard = () => {
     navigate('/signin'); 
   };
 
+  const handleDeleteUser = async () => {
+    try {
+      await userService.deleteUser(user._id);
+      setUser(null); 
+      navigate('/signin');
+    } catch (err) {
+      console.error('Failed to delete user:', err);
+    }
+  };
+
   return (
     <main className="dashboard">
       <div className="header">
-        <h1>Welcome to {user.username}'s collection</h1>
+        <h1>Add to your collection {user.username}!</h1>
       </div>
-      <p>Bio: {user.bio || "No bio provided"}</p>
+      <p> About me: {user.bio || "No bio provided"}</p>
       <p className="flicks">Check out their flicks:</p>
       <div className="movie-grid">
         {movies.map((movie) => (
@@ -50,8 +61,12 @@ const Dashboard = () => {
       </div>
       <div className="actions">
         <Link to="/search-users" className="action-link">Search for Users</Link>
-        {user._id === user._id && (<Link to="/add-movie" className="action-link">Add new movie</Link>)}
+        {user && (<Link to="/add-movie" className="action-link">Add new movie</Link>)}
         <button onClick={handleSignout} className="action-link">Sign out</button>
+      </div>
+      <div className="profile-actions">
+        <button onClick={() => navigate(`/profile/${user._id}/edit`)} className="action-link">Edit Profile</button>
+        <button onClick={handleDeleteUser} className="delete-button">Delete Profile</button>
       </div>
     </main>
   );

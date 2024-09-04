@@ -12,6 +12,8 @@ import MovieForm from './components/MovieForm/MovieForm';
 import CommentForm from './components/CommentForm/CommentForm';
 import UserSearch from './components/UserSearch/UserSearch';
 import ProfilePage from './components/ProfilePage/ProfilePage';
+import ProfileEditForm from './components/ProfileEditForm/ProfileEditForm';
+
 
 export const AuthedUserContext = createContext(null);
 
@@ -44,8 +46,9 @@ const App = () => {
             <Route path="/movies/:movieId/comments/:commentId/edit" element={<CommentForm isEdit={true} />} />
             <Route path="/search-users" element={<UserSearch />} />
             <Route path="/profile/:userId" element={<ProfilePage />} />
-            <Route path="/dashboard" element={<Dashboard user={user} setUser={setUser} />} />
-            <Route path="/users/:userId/dashboard" element={<Dashboard user={user} setUser={setUser} />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/users/:userId/dashboard" element={<Dashboard />} />
+            <Route path="/profile/:userId/edit" element={<ProfileEditForm />} />
           </>
         ) : (
           <Route path="/" element={<Landing />} />
