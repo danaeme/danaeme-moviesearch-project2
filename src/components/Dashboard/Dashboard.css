@@ -13,9 +13,9 @@ body, html {
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center; /* Vertically centers the content */
+    justify-content: center; 
     padding: 20px;
-    height: 100vh; /* Take up the full viewport height */
+    height: 100vh; 
     max-width: 1000px;
 }
 
@@ -31,7 +31,7 @@ body, html {
     margin: 0;
 }
 
-/* Bio and flicks text centered */
+
 p {
     font-weight: bold;
     color: black;
@@ -43,7 +43,7 @@ p {
     margin: 10px 0 20px 0;
 }
 
-/* Movie grid centered */
+
 .movie-grid {
     display: flex;
     justify-content: center;
@@ -80,7 +80,6 @@ p {
     text-decoration: underline;
 }
 
-/* Action buttons centered */
 .actions, .profile-actions {
     display: flex;
     justify-content: center;
@@ -103,5 +102,5 @@ p {
 }
 
 .delete-button {
-    background-color: #000; /* Keep delete button consistent */
+    background-color: #000; 
 }
