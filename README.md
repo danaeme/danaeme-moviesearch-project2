@@ -20,9 +20,9 @@
 
   ## :camera_flash: Screenshots 
 
- <h3>Board Page</h3> | <img
+ <h3>Dashboard</h3> | <img
 <img src="/images/dashboard.png" width="700">
- <h3 align="center">Record Page</h3> | <img>
+ <h3 align="center">Movie Page</h3> | <img>
 <img src="/images/detailspage.png" width="700">
   /> |
 
