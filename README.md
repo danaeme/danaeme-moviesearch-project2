@@ -1,6 +1,6 @@
 <div id="header" align="center">
 
-  <img src="/images/coverReadMe.png" width="600" height="400">
+  <img src="/images/cover.png" width="600" height="400">
 
 </div>
 
@@ -64,4 +64,4 @@
 
 - [:x:] Deeper/More Dynamic API integration. The current Add Movie implementation is a customizable, manual method of adding entries, however allowing users to access an external database and search for entries based on a set of fields would increase the efficiency and ease of use of this component even further.
 
-- [:x:] Community features. Increasing interactivity between users. Save user entries to your dashboard in their own section to show off collabs 
+- [:x:] Community features. Increasing interactivity between users. Show off your shared interests by saving user entries to your dashboard in their own section.
