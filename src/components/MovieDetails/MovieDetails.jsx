@@ -74,7 +74,6 @@ const MovieDetails = () => {
           movie.comments.map((comment) => (
             <li key={comment._id}>
               {comment.user.username}: "{comment.comment}"
-              {/* Only show edit/delete for the user's own comments */}
               {authedUser && comment.user && comment.user._id === authedUser.user._id && (
                 <>
                   <button onClick={() => navigate(`/movies/${movieId}/comments/${comment._id}/edit`)} style={{ marginLeft: '10px' }}>
@@ -100,7 +99,7 @@ const MovieDetails = () => {
         <button onClick={() => navigate(`/movies/${movieId}/add-comment`)}>Add a Comment</button>
       </div>
       <div className="movie-actions">
-        <button onClick={() => navigate(-1)}>Back</button>
+        <button onClick={() => navigate(`/profile/${movie.createdBy._id}`)}>Back</button>
       </div>
     </main>
   );

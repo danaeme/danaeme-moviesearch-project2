@@ -44,6 +44,27 @@ const getComments = async (movieId) => {
   }
 };
 
+const getComment = async (movieId, commentId) => {  
+  try {
+    const res = await fetch(`${BACKEND_URL}/movies/${movieId}/comments/${commentId}`, {
+      method: 'GET',
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`,
+      },
+    });
+
+    if (!res.ok) {
+      const error = await res.json(); 
+      throw new Error(error.error); 
+    }
+
+    return await res.json();
+  } catch (err) {
+    console.error(err);
+    throw err;
+  }
+};
+
 const updateComment = async (movieId, commentId, commentData) => {
   try {
     const res = await fetch(`${BACKEND_URL}/movies/${movieId}/comments/${commentId}`, {
@@ -88,4 +109,4 @@ const deleteComment = async (movieId, commentId) => {
   }
 };
 
-export { addComment, getComments, updateComment, deleteComment };
+export { addComment, getComments, getComment, updateComment, deleteComment };

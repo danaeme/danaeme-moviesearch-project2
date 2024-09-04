@@ -12,7 +12,7 @@ const CommentForm = ({ isEdit = false }) => {
     if (isEdit) {
       const fetchComment = async () => {
         try {
-          const comment = await commentService.getComments(movieId, commentId);
+          const comment = await commentService.getComment(movieId, commentId);          
           setCommentText(comment.comment);
         } catch (err) {
           console.error(err);

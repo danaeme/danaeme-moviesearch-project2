@@ -47,7 +47,8 @@ const ProfilePage = (props) => {
             <p>No movies to display</p>
         )}
     </div>
-    <button onClick={() => navigate(`/users/${userId}/dashboard`)}>Back</button>
+    <button onClick={() => navigate("/search-users")}>Back</button>
+    <button onClick={() => navigate(`/users/${userId}/dashboard`)}>Dashboard</button>
     </main>
     );
 };
