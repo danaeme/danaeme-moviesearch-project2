@@ -21,8 +21,6 @@ const getMovies = async (userId) => {
 };
   
 
-// export { getUserMovies };
-
 
 const getMovieById = async (movieId) => {
   try {
@@ -56,7 +54,7 @@ const addMovie = async (movieData) => {
       if (res.ok) {
         return movie;
       } else {
-        throw new Error(json.err);
+        throw new Error(movie.err);
       }
     } catch (err) {
       console.error(err);
@@ -78,7 +76,7 @@ const updateMovie = async (movieId, updatedData) => {
       if (res.ok) {
         return movie;
       } else {
-        throw new Error(json.err);
+        throw new Error(movie.err);
       }
     } catch (err) {
       console.error(err);
@@ -98,7 +96,7 @@ const deleteMovie = async (movieId) => {
         return { message: 'Movie deleted' };
       } else {
         const error = await res.json();
-        throw new Error(json.err);
+        throw new Error(error.err || 'Failed to delete your movie');     
       }
     } catch (err) {
       console.error(err);
